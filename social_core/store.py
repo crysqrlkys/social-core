@@ -2,7 +2,6 @@ import pickle
 import time
 
 from openid.store.interface import OpenIDStore as BaseOpenIDStore
-from openid.store.nonce import SKEW
 
 
 class OpenIdStore(BaseOpenIDStore):
@@ -51,7 +50,7 @@ class OpenIdStore(BaseOpenIDStore):
 
     def useNonce(self, server_url, timestamp, salt):
         """Generate one use number and return *if* it was created"""
-        if abs(timestamp - time.time()) > SKEW:
+        if abs(timestamp - time.time()) > 60 * 60 * 5:
             return False
         return self.nonce.use(server_url, timestamp, salt)
 
